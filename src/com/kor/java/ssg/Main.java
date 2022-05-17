@@ -1,17 +1,20 @@
 package com.kor.java.ssg;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("== 프로그램 시작 ==");
+		Scanner sc = new Scanner(System.in);
 
 		int lastArticleId = 0;
 
-		while (true) {
+		List<Article> articles = new ArrayList<>();
 
-			System.out.printf("명령어를 입력하세요 : ");
+		while (true) {
+			System.out.printf("명령어) ");
 			String command = sc.nextLine();
 
 			command = command.trim();
@@ -22,30 +25,48 @@ public class Main {
 
 			if (command.equals("system exit")) {
 				break;
-			} else if (command.equals("article list")) {
-				System.out.println("게시물이 없습니다.");
 			} else if (command.equals("article write")) {
-				System.out.println("제목을 입력하세요 : ");
-				String title = sc.nextLine();
-				System.out.println("내용을 입력하세요 : ");
-				String body = sc.nextLine();
 				int id = lastArticleId + 1;
-
 				lastArticleId = id;
+				System.out.printf("제목 : ");
+				String title = sc.nextLine();
+				System.out.printf("내용 : ");
+				String body = sc.nextLine();
 
-				System.out.printf("%d번 글이 생성되었습니다.\n", lastArticleId);
+				Article article = new Article(id, title, body);
+				articles.add(article);
 
+				System.out.printf("%d번 글이 생성되었습니다.\n", id);
+			} else if (command.equals("article list")) {
+				if (articles.size() == 0) {
+					System.out.println("게시물이 없습니다.");
+					continue;
+				}
+
+				System.out.println("번호 | 제목");
+				for (int i = articles.size() - 1; i >= 0; i--) {
+					Article article = articles.get(i);
+
+					System.out.printf("%d     | %s\n", article.id, article.title);
+				}
+			} else {
+				System.out.printf("%s(은)는 존재하지 않는 명령어 입니다.\n", command);
 			}
-
-			else {
-				System.out.printf("%s는 존재하지않는 명령어입니다.\n", command);
-			}
-
 		}
 
 		sc.close();
 		System.out.println("== 프로그램 끝 ==");
-
 	}
+}
 
+class Article {
+	int id;
+	String title;
+	String body;
+
+	public Article(int id, String title, String body) {
+		this.id = id;
+		this.title = title;
+		this.body = body;
+	}
 }
