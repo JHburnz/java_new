@@ -31,7 +31,7 @@ public class MemberController {
 
 		if (index == -1) {
 			return true;
-		}
+		} 
 
 		return false;
 	}
