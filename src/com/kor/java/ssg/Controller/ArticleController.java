@@ -1,4 +1,4 @@
-package com.kor.java.ssg.contrller;
+package com.kor.java.ssg.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,34 @@ import java.util.Scanner;
 import com.kor.java.ssg.dto.Article;
 import com.kor.java.ssg.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	private Scanner sc;
 	private List<Article> articles;
+	private String command;
+	private String actionMethodName;
+
+	public void doAction(String command, String actionMethodName) {
+		this.command = command;
+		this.actionMethodName = actionMethodName;
+		
+		switch ( actionMethodName ) {
+		case "list" :
+			showList();
+			break;
+		case "detail" :
+			showDetail();
+			break;
+		case "modify" :
+			doModify();
+			break;
+		case "delete" :
+			doDelete();
+			break;
+		case "write" :
+			doWrite();
+			break;
+		}
+	}
 
 	public ArticleController(Scanner sc, List<Article> articles) {
 		this.sc = sc;
@@ -30,7 +55,7 @@ public class ArticleController {
 		System.out.printf("%d번 글이 생성되었습니다.\n", id);
 	}
 
-	public void showList(String command) {
+	public void showList() {
 		if (articles.size() == 0) {
 			System.out.println("게시물이 없습니다.");
 			return;
@@ -62,7 +87,7 @@ public class ArticleController {
 		}
 	}
 
-	public void showDetail(String command) {
+	public void showDetail() {
 		String[] commandBits = command.split(" ");
 		int id = Integer.parseInt(commandBits[2]);
 
@@ -92,7 +117,7 @@ public class ArticleController {
 		return null;
 	}
 
-	public void doModify(String command) {
+	public void doModify() {
 		String[] commandBits = command.split(" ");
 		int id = Integer.parseInt(commandBits[2]);
 
@@ -126,7 +151,7 @@ public class ArticleController {
 		return -1;
 	}
 
-	public void doDelete(String command) {
+	public void doDelete() {
 		String[] commandBits = command.split(" ");
 		int id = Integer.parseInt(commandBits[2]);
 
