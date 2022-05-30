@@ -4,8 +4,8 @@ public class Article extends Dto {
 	public String title;
 	public String body;
 	public int hit;
-	public int memberId; // 4
-
+	public int memberId;
+	
 	public Article(int id, String regDate, int memberId, String title, String body) {
 		this(id, regDate, memberId, title, body, 0);
 	}
@@ -18,7 +18,7 @@ public class Article extends Dto {
 		this.body = body;
 		this.hit = hit;
 	}
-
+	
 	public void increaseHit() {
 		hit++;
 	}

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.kor.java.ssg.container.Container;
 import com.kor.java.ssg.dto.Article;
+import com.kor.java.ssg.dto.Member;
 import com.kor.java.ssg.util.Util;
 
 public class ArticleController extends Controller {
@@ -12,39 +14,39 @@ public class ArticleController extends Controller {
 	private List<Article> articles;
 	private String command;
 	private String actionMethodName;
-
+	
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
-
-		articles = new ArrayList<Article>();
+		
+		articles = Container.articleDao.articles;
 	}
 
 	public void doAction(String command, String actionMethodName) {
 		this.command = command;
 		this.actionMethodName = actionMethodName;
-
-		switch (actionMethodName) {
-		case "list":
+		
+		switch ( actionMethodName ) {
+		case "list" :
 			showList();
 			break;
-		case "detail":
+		case "detail" :
 			showDetail();
 			break;
-		case "modify":
+		case "modify" :
 			doModify();
 			break;
-		case "delete":
+		case "delete" :
 			doDelete();
 			break;
-		case "write":
+		case "write" :
 			doWrite();
 			break;
-		default:
+		default :
 			System.out.println("존재하지 않는 명령어 입니다");
 			break;
 		}
 	}
-
+	
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
@@ -85,17 +87,29 @@ public class ArticleController extends Controller {
 				}
 			}
 
-			if (articles.size() == 0) {
+			if (forListArticles.size() == 0) {
 				System.out.println("검색결과가 존재하지 않습니다.");
 				return;
 			}
 		}
 
-		System.out.println("번호 | 작성자 | 조회 | 제목");
+		System.out.println("번호 |        작성자 | 조회 | 제목");
 		for (int i = forListArticles.size() - 1; i >= 0; i--) {
 			Article article = forListArticles.get(i);
+			
+			String writerName = null;
+			
+			List<Member> members = Container.memberDao.members;
+			
+			for ( Member member : members ) {
+				if ( article.memberId == member.id ) {
+					writerName = member.name;
+					break;
+				}
+			}
+			
 
-			System.out.printf("%4d | %6d | %4d | %s\n", article.id, article.memberId, article.hit, article.title);
+			System.out.printf("%4d | %10s | %4d | %s\n", article.id, writerName, article.hit, article.title);
 		}
 	}
 
@@ -140,7 +154,7 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
 		}
-
+		
 		if (foundArticle.memberId != loginedMember.id) {
 			System.out.printf("권한이 없습니다.\n");
 			return;
@@ -179,7 +193,7 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
 		}
-
+		
 		if (foundArticle.memberId != loginedMember.id) {
 			System.out.printf("권한이 없습니다.\n");
 			return;

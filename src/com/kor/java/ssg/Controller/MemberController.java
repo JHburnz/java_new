@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.kor.java.ssg.container.Container;
 import com.kor.java.ssg.dto.Article;
 import com.kor.java.ssg.dto.Member;
 import com.kor.java.ssg.util.Util;
@@ -17,7 +18,7 @@ public class MemberController extends Controller {
 	public MemberController(Scanner sc) {
 		this.sc = sc;
 
-		members = new ArrayList<Member>();
+		members = Container.memberDao.members;
 	}
 
 	public void doAction(String command, String actionMethodName) {
@@ -40,7 +41,7 @@ public class MemberController extends Controller {
 		}
 	}
 
-	private void doLogout() {
+	private void doLogout() {		
 		loginedMember = null;
 		System.out.println("로그아웃 되었습니다.");
 	}
@@ -66,13 +67,13 @@ public class MemberController extends Controller {
 		loginedMember = member;
 		System.out.printf("로그인 성공! %s님 환영합니다.\n", loginedMember.name);
 	}
-
+	
 	public void makeTestData() {
 		System.out.println("테스트를 위한 회원 데이터를 생성합니다.");
 
 		members.add(new Member(1, Util.getNowDateStr(), "admin", "admin", "관리자"));
-		members.add(new Member(2, Util.getNowDateStr(), "user1", "user1", "유저1"));
-		members.add(new Member(3, Util.getNowDateStr(), "user2", "user2", "유저2"));
+		members.add(new Member(2, Util.getNowDateStr(), "user1", "user1", "홍길동"));
+		members.add(new Member(3, Util.getNowDateStr(), "user2", "user2", "홍길순"));
 	}
 
 	private Member getMemberByLoginId(String loginId) {
